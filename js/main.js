@@ -122,9 +122,8 @@ async function startStream() {
     select = document.getElementById("videoSource");
 
     select.addEventListener('change', () => {
-      setDefaultDevice(select.value).then(() => {
-        startStream()
-      })
+      alert(`Selected device ${select.value}`);
+      setDefaultDevice(select.value).then(startStream)
     })
     
     getVideoDevices().then(videoDevices => {
