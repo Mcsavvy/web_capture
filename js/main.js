@@ -27,6 +27,11 @@ let clearbutton = null;
  * @type {HTMLSelectElement}
  */
 let select = null;
+/**
+ * 
+ * @type {MediaStream}
+ */
+let currentStream = null;
 
 async function getVideoDevices() {
   let mediaDevices = await navigator.mediaDevices.enumerateDevices();
@@ -50,7 +55,11 @@ async function getVideoStream(deviceId) {
   } else {
     constraints.video = true;
   }
+  if (currentStream) {
+    currentStream.getTracks().forEach((track) => track.stop());
+  }
   let stream = await navigator.mediaDevices.getUserMedia(constraints);
+  currentStream = stream;
   return stream;
 }
 
@@ -130,7 +139,6 @@ async function startStream() {
     select = document.getElementById("cam-list");
 
     select.addEventListener("change", () => {
-      alert(`Selected device ${select.value}`);
       streaming = false;
       setDefaultDevice(select.value).then(startStream);
     });
