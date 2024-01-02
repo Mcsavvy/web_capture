@@ -17,65 +17,74 @@ let photo = null;
 /**
  * @type {HTMLButtonElement}
  */
-let startbutton = null;
+let snapbutton = null;
 /**
- * 
+ * @type {HTMLButtonElement}
+ */
+let clearbutton = null;
+/**
+ *
  * @type {HTMLSelectElement}
  */
 let select = null;
 
-
 async function getVideoDevices() {
-  let mediaDevices = await navigator.mediaDevices.enumerateDevices()
-  let videoDevices = mediaDevices.filter(device => device.kind === 'videoinput')
-  return videoDevices
+  let mediaDevices = await navigator.mediaDevices.enumerateDevices();
+  let videoDevices = mediaDevices.filter(
+    (device) => device.kind === "videoinput"
+  );
+  return videoDevices;
 }
 
 /**
- * 
- * @param {?ConstrainDOMString} deviceId 
- * @returns 
+ *
+ * @param {?ConstrainDOMString} deviceId
+ * @returns
  */
 async function getVideoStream(deviceId) {
   let constraints = {
-    audio: false
-  }
+    audio: false,
+  };
   if (deviceId) {
-    constraints.video = {deviceId: deviceId}
+    constraints.video = { deviceId: deviceId };
   } else {
-    constraints.video = true
+    constraints.video = true;
   }
-  let stream = await navigator.mediaDevices.getUserMedia(constraints)
-  return stream
+  let stream = await navigator.mediaDevices.getUserMedia(constraints);
+  return stream;
 }
 
-
 /**
- * 
- * @param {ConstrainDOMString} deviceId 
+ *
+ * @param {ConstrainDOMString} deviceId
  */
 async function setDefaultDevice(deviceId) {
+  console.log("setDefaultDevice", deviceId);
   let videoDevices = await getVideoDevices();
   if (videoDevices.length === 0) {
-      return false
+    return false;
   }
-  if (videoDevices.some(device => device.deviceId === deviceId)) {
-    defaultDeviceId = deviceId
-  }
-  defaultDeviceId = videoDevices[0].deviceId
-  return true
+  // if (videoDevices.some((device) => device.deviceId === deviceId)) {
+  //   defaultDeviceId = deviceId;
+  // }
+  // defaultDeviceId = videoDevices[0].deviceId;
+  defaultDeviceId = deviceId;
+  // alert(`Default device ${defaultDeviceId}`)
+  return true;
 }
 
 async function startStream() {
   let stream = null;
   try {
-    stream = await getVideoStream(defaultDeviceId)
+    console.log("defaultDeviceId", defaultDeviceId);
+    stream = await getVideoStream(defaultDeviceId);
   } catch (err) {
     console.error(`An error occurred: ${err}`);
-    return
+    return;
   }
-  video.srcObject = stream
-  await video.play()
+  console.log("stream", stream);
+  video.srcObject = stream;
+  await video.play();
 }
 
 (() => {
@@ -93,8 +102,6 @@ async function startStream() {
 
   // The various HTML elements we need to configure or control. These
   // will be set by the startup() function.
-
- 
 
   function showViewLiveResultButton() {
     if (window.self !== window.top) {
@@ -118,43 +125,56 @@ async function startStream() {
     video = document.getElementById("video");
     canvas = document.getElementById("canvas");
     photo = document.getElementById("photo");
-    startbutton = document.getElementById("startbutton");
-    select = document.getElementById("videoSource");
+    snapbutton = document.getElementById("snap");
+    clearbutton = document.getElementById("clear");
+    select = document.getElementById("cam-list");
 
-    select.addEventListener('change', () => {
+    select.addEventListener("change", () => {
       alert(`Selected device ${select.value}`);
-      setDefaultDevice(select.value).then(startStream)
-    })
-    
-    getVideoDevices().then(videoDevices => {
-      if (videoDevices.length === 0) {
-        console.error('No video devices found')
-        return
-      }
-      videoDevices.forEach(device => {
-        let option = document.createElement('option')
-        option.value = device.deviceId
-        option.text = device.label
-        select.appendChild(option)
+      streaming = false;
+      setDefaultDevice(select.value).then(startStream);
+    });
+
+    getVideoDevices()
+      .then((videoDevices) => {
+        if (videoDevices.length === 0) {
+          console.error("No video devices found");
+          return;
+        }
+        videoDevices.forEach((device) => {
+          let option = document.createElement("option");
+          option.value = device.deviceId;
+          option.text = device.label;
+          select.appendChild(option);
+        });
+        setDefaultDevice(videoDevices[0].deviceId);
+        setInterval(takepicture, 5000);
+        snapbutton.addEventListener(
+          "click",
+          (ev) => {
+            takepicture();
+            ev.preventDefault();
+          },
+          false
+        );
+        clearbutton.addEventListener(
+          "click",
+          (ev) => {
+            clearphoto();
+            ev.preventDefault();
+          },
+          false
+        );
+        startStream();
       })
-      setDefaultDevice(videoDevices[0].deviceId)
-      setInterval(takepicture, 5000);
-      startbutton.addEventListener(
-        "click",
-        (ev) => {
-          takepicture();
-          ev.preventDefault();
-        },
-        false
-      );
-      startStream();
-    }).catch(err => {
-      console.error(`An error occurred: ${err}`);
-    })
+      .catch((err) => {
+        console.error(`An error occurred: ${err}`);
+      });
 
     video.addEventListener(
       "canplay",
       (ev) => {
+        console.log("canplay");
         if (!streaming) {
           height = video.videoHeight / (video.videoWidth / width);
 
@@ -165,8 +185,8 @@ async function startStream() {
             height = width / (4 / 3);
           }
 
-          // video.setAttribute("width", width);
-          // video.setAttribute("height", height);
+          // video.setAttribute("width", "80vw");
+          // video.setAttribute("height", "80vh");
           canvas.setAttribute("width", width);
           canvas.setAttribute("height", height);
           streaming = true;
