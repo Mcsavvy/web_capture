@@ -120,6 +120,12 @@ async function startStream() {
     photo = document.getElementById("photo");
     startbutton = document.getElementById("startbutton");
     select = document.getElementById("videoSource");
+
+    select.addEventListener('change', () => {
+      setDefaultDevice(select.value).then(() => {
+        startStream()
+      })
+    })
     
     getVideoDevices().then(videoDevices => {
       if (videoDevices.length === 0) {
@@ -130,13 +136,6 @@ async function startStream() {
         let option = document.createElement('option')
         option.value = device.deviceId
         option.text = device.label
-        option.onselect = (ev) => {
-          if (defaultDeviceId === device.value) {
-            return false;
-          }
-          defaultDeviceId = device.value;
-          startStream();
-        }
         select.appendChild(option)
       })
       setDefaultDevice(videoDevices[0].deviceId)
