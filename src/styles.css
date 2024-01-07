@@ -1,4 +1,4 @@
-#video {
+#webcam-stream {
     flex: 1 1 auto;
     border: 1px solid black;
     box-shadow: 2px 2px 3px black;
@@ -14,45 +14,94 @@
     height: 100%;
 }
 
-#photo {
-    flex: 1 1 auto;
-    border: 1px solid black;
-    box-shadow: 2px 2px 3px black;
-    width: 100%;
-    height: 100%;
-}
-
 #canvas {
     display: none;
 }
 
-.camera {
-    width: 340px;
-    display: inline-block;
+.microphone {
+    display: flex;
+    flex: 0 1 100%;
+    width: 200px;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+    align-content: stretch;
 }
 
-.output {
-    width: 340px;
-    display: inline-block;
-    vertical-align: top;
+.microphone > .outline {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: absolute;
 }
 
-#startbutton {
-    display: block;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    bottom: 32px;
-    background-color: rgba(0, 150, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
-    font-size: 14px;
-    font-family: "Lucida Grande", "Arial", sans-serif;
-    color: rgba(255, 255, 255, 1);
+.microphone.active > .outline {
+    border: 8px solid #B5A4A4;
+    animation: pulse 3s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
 }
 
-.contentarea {
-    font-size: 16px;
-    font-family: "Lucida Grande", "Arial", sans-serif;
-    width: 760px;
+.microphone > .button {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.microphone.active > .button {
+    background: #50CDDD;
+    box-shadow: 0px 0px 80px #0084F9;
+}
+
+.microphone svg {
+    width: 5rem;
+    height: 5rem;
+    fill: #000;
+}
+
+.microphone.active svg {
+    fill: #1e2d70;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+        border: 65px solid #0B3082;
+    }
+
+    50% {
+        border: solid #A3FFC2;
+        opacity: 0.8;
+    }
+
+    90% {
+        transform: scale(3.2);
+        opacity: 0.2;
+        border: 3px solid #2E3CFF;
+    }
+
+    100% {
+        transform: scale(3.3);
+        opacity: 0;
+        border: 1px solid #7A89FF;
+    }
+}
+
+#delayed {
+    animation-delay: 1.5s;
+}
+
+.microphone > #circlein {
+    width: 7.2rem;
+    height: 7.2rem;
+    border-radius: 50%;
+    background: gray;
+    position: absolute;
+}
+
+.microphone.active > #circlein {
+    background: #50CDDD;
+    box-shadow: 0px 0px 80px #0084F9;
 }
