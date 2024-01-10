@@ -1,4 +1,5 @@
 import $ from "jquery";
+import client from "../client";
 import {
   getMediaDevices,
   CAM_LIST,
@@ -97,6 +98,7 @@ export async function startRecording() {
   recorder.onstop = (e) => {
     let blob = new Blob(chunks, { type: "video/webm" });
     let url = URL.createObjectURL(blob);
+    client.emit("clip", Date.now(), blob);
     $(WEBCAM_RECORDING).attr("src", url);
   };
   recorder.start();

@@ -16,7 +16,7 @@
           <label for="cam-list">Select Camera</label>
         </div>
       </div>
-      <div class="row">
+      <div class="row align-items-center">
         <div class="col-md-6">
           <div class="card">
             <div class="card-body" id="card-body">
@@ -51,10 +51,39 @@
               <button
                 id="record-webcam"
                 type="button"
-                class="btn btn-primary mt-2 disabled"
+                class="btn btn-primary disabled"
               >
                 Record Webcam (1 sec)
               </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" id="card">
+            <div class="card-body">
+              <img id="webcam-snapshot" src="https://placehold.co/512x257.png" height="100%" width="100%"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" id="card">
+            <div class="card-body">
+              <table id="object-predictions" class="table table-striped-columns w-100 h-100">
+                <thead>
+                  <tr>
+                    <th>Object</th>
+                    <th>Confidence</th>
+                    <th>Top</th>
+                    <th>Left</th>
+                    <th>Bottom</th>
+                    <th>Right</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="6" class="text-center display-4">Record Webcam To See Predictions</td>
+                  </tr>
+              </table>
             </div>
           </div>
         </div>
