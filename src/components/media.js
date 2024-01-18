@@ -10,10 +10,8 @@ export const MIC_RECORDING = "audio#mic-recording";
 export const MIC_START = "button#start-mic";
 export const MIC_STOP = "button#stop-mic";
 export const MIC_RECORD = "button#record-mic";
-export const MIC_RECORD_TRANSCRIPT = "button#record-transcript";
 export const MIC_STOP_RECORDING = "button#stop-mic-recording";
 export const MIC_ICON = "div.microphone";
-export const MIC_TRANSCRIPT = "textarea#mic-transcript";
 export const WEBCAM_SNAPSHOT = "img#webcam-snapshot";
 export const OBJECT_PREDICTIONS = "table#object-predictions";
 

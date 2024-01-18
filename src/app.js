@@ -9,7 +9,6 @@ import {
   stopMicrophoneStream,
   startRecording as startRecordingAudio,
   stopRecording as stopRecordingAudio,
-  recordTranscript,
 } from "./components/mic";
 import {
   CAM_LIST,
@@ -23,7 +22,6 @@ import {
   WEBCAM_START,
   WEBCAM_STOP,
   WEBCAM_VIDEO,
-  MIC_RECORD_TRANSCRIPT,
 } from "./components/media";
 import {
   loadVideoDevices,
@@ -117,10 +115,6 @@ $(() => {
   });
   $(MIC_STOP_RECORDING).on("click", function (ev) {
     stopRecordingAudio();
-    ev.preventDefault();
-  });
-  $(MIC_RECORD_TRANSCRIPT).on("click", function (ev) {
-    recordTranscript();
     ev.preventDefault();
   });
   startup();

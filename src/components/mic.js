@@ -1,13 +1,12 @@
 import $ from "jquery";
 import {
   MIC_ICON,
+  MIC_LIST,
   MIC_RECORD,
   MIC_RECORDING,
-  MIC_RECORD_TRANSCRIPT,
   MIC_START,
   MIC_STOP,
   MIC_STOP_RECORDING,
-  MIC_TRANSCRIPT,
   getMediaDevices,
 } from "./media";
 
@@ -17,9 +16,6 @@ let currentStream = null;
 /**@type {MediaRecorder} */
 let recorder = null;
 let chunks = [];
-/**@type {SpeechRecognition} */
-let recognition = null;
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 export async function loadAudioDevices() {
   let microphoneDevices;
@@ -30,7 +26,7 @@ export async function loadAudioDevices() {
     return [];
   }
   microphoneDevices.forEach((device) => {
-    $("#mic-list").append(
+    $(MIC_LIST).append(
       `<option class="mic" value="${device.deviceId}">${
         device.label || "default"
       }</option>`
@@ -70,7 +66,6 @@ export async function startMicrophoneStream() {
   $(MIC_START).toggleClass("disabled", true);
   $(MIC_STOP).toggleClass("disabled", false);
   $(MIC_RECORD).toggleClass("disabled", false);
-  $(MIC_RECORD_TRANSCRIPT).toggleClass("disabled", false);
   return stream;
 }
 
@@ -84,7 +79,6 @@ export function stopMicrophoneStream() {
   $(MIC_START).toggleClass("disabled", false);
   $(MIC_STOP).toggleClass("disabled", true);
   $(MIC_RECORD).toggleClass("disabled", true);
-  $(MIC_RECORD_TRANSCRIPT).toggleClass("disabled", true);
   $(MIC_STOP_RECORDING).toggleClass("disabled", true);
 }
 
@@ -104,48 +98,6 @@ export function startRecording() {
     $(MIC_RECORDING).attr("src", audioURL);
   };
   recorder.start();
-  recordTranscript();
-}
-
-export function recordTranscript() {
-  recognition = new SpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = true;
-
-  recognition.onresult = (e) => {
-    console.log("onresult", e);
-    let transcript = e.results[0][0].transcript;
-    $(MIC_TRANSCRIPT).val(transcript);
-  };
-  recognition.onaudiostart = (e) => {
-    console.log("Recognition: started listening");
-  };
-  recognition.onaudioend = (e) => {
-    console.log("Recognition: stopped listening");
-  };
-  recognition.onspeechstart = (e) => {
-    console.log("Recognition: speech started");
-  };
-  recognition.onnomatch = (e) => {
-    console.log("Recognition: no match");
-  };
-  recognition.onerror = (event) => {
-    alert("An error occurred: " + event.error);
-    console.error("Recognition error: ", event.error);
-  };
-  recognition.onstart = (e) => {
-    console.log("Recognition: started");
-  };
-  recognition.onend = (e) => {
-    console.log("Recognition: ended");
-    $(MIC_RECORD_TRANSCRIPT).toggleClass("disabled", false);
-    if (!recorder) {
-      $(MIC_STOP_RECORDING).toggleClass("disabled", true);
-    }
-  };
-
-  recognition.start();
-  $(MIC_RECORD_TRANSCRIPT).toggleClass("disabled", true);
   $(MIC_STOP_RECORDING).toggleClass("disabled", false);
   $(MIC_RECORD).toggleClass("disabled", true);
 }
@@ -153,8 +105,6 @@ export function recordTranscript() {
 export function stopRecording() {
   if (recorder) {
     recorder.stop();
-  } if (recognition) {
-    recognition.stop();
   }
   $(MIC_RECORD).toggleClass("disabled", false);
   $(MIC_STOP_RECORDING).toggleClass("disabled", true);
