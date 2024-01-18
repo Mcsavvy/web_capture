@@ -1,6 +1,6 @@
 import io, { Socket } from "socket.io-client";
 import $ from "jquery";
-import {OBJECT_PREDICTIONS, WEBCAM_SNAPSHOT} from "./components/media.js";
+import {OBJECT_RECOGNITIONS} from "./components/media.js";
 
 const serverURL = process.env.SERVER_URL;
 /**@type {Socket} */
@@ -31,8 +31,7 @@ client.on("recognition", (data) => {
   console.log("got recognition:",JSON.stringify(result));
   let byte_array = new Uint8Array(image_bytes).reduce((data, byte) => data + String.fromCharCode(byte), '');
   let imageUrl = `data:image/png;base64,${btoa(byte_array)}`;
-  $(WEBCAM_SNAPSHOT).attr("src", imageUrl);
-  let tableBody = $(OBJECT_PREDICTIONS + ' tbody');
+  let tableBody = $(OBJECT_RECOGNITIONS + ' tbody');
   tableBody.empty();
   result.forEach((prediction) => {
     let {top, left, bottom, right} = prediction.location;

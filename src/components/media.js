@@ -12,8 +12,8 @@ export const MIC_STOP = "button#stop-mic";
 export const MIC_RECORD = "button#record-mic";
 export const MIC_STOP_RECORDING = "button#stop-mic-recording";
 export const MIC_ICON = "div.microphone";
-export const WEBCAM_SNAPSHOT = "img#webcam-snapshot";
-export const OBJECT_PREDICTIONS = "table#object-predictions";
+export const OBJECT_RECOGNITIONS = "table#object-recognitions";
+export const OBSTACLE_DETECTIONS = "table#obstacle-detections";
 
 /**
  *

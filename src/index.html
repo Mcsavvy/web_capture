@@ -49,11 +49,18 @@
                 controls
               ></video>
               <button
-                id="record-webcam"
+                id="detect-obstacles"
                 type="button"
                 class="btn btn-primary disabled"
               >
-                Record Webcam (1 sec)
+                Detect Obstacles
+              </button>
+              <button
+                id="recognize-objects"
+                type="button"
+                class="btn btn-primary disabled"
+              >
+                Recognize Objects
               </button>
             </div>
           </div>
@@ -61,27 +68,34 @@
         <div class="col-md-6">
           <div class="card" id="card">
             <div class="card-body">
-              <img id="webcam-snapshot" src="https://placehold.co/512x257.png" height="100%" width="100%"/>
+              <table id="obstacle-detections" class="table table-striped-columns w-100 h-100">
+                <thead>
+                  <tr>
+                    <th>Obstacle</th>
+                    <th>Confidence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="6" class="text-center display-4">Turn On Monitoring To See Obstacles</td>
+                  </tr>
+              </table>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="card" id="card">
             <div class="card-body">
-              <table id="object-predictions" class="table table-striped-columns w-100 h-100">
+              <table id="object-recognitions" class="table table-striped-columns w-100 h-100">
                 <thead>
                   <tr>
                     <th>Object</th>
                     <th>Confidence</th>
-                    <th>Top</th>
-                    <th>Left</th>
-                    <th>Bottom</th>
-                    <th>Right</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td colspan="6" class="text-center display-4">Record Webcam To See Predictions</td>
+                    <td colspan="6" class="text-center display-4">Turn On Monitoring To See Objects</td>
                   </tr>
               </table>
             </div>
